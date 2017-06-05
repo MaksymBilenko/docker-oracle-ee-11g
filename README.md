@@ -1,7 +1,7 @@
-Oracle Standard Edition 11g Release 2
+Oracle Enterprise Edition 11g Release 2
 ============================
 
-Oracle Standard Edition 11g Release 2 on Oracle Linux
+Oracle Enterprise Edition 11g Release 2 on Oracle Linux
 
 This **Dockerfile** is a [trusted build](https://registry.hub.docker.com/u/sath89/oracle-ee-11g/) of [Docker Registry](https://registry.hub.docker.com/).
 
