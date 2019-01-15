@@ -87,14 +87,13 @@ case "$1" in
 		fi
 
 		if [ $IMPORT_FROM_VOLUME ]; then
-			echo "Starting import from '/docker-entrypoint-initdb.d':"
+			echo "Starting import from '/etc/entrypoint-initdb.d':"
 
-			for f in /docker-entrypoint-initdb.d/*; do
-				echo "found file /docker-entrypoint-initdb.d/$f"
+			for f in /etc/entrypoint-initdb.d/*; do
+				echo "found file /etc/entrypoint-initdb.d/$f"
 				case "$f" in
 					*.sh)     echo "[IMPORT] $0: running $f"; . "$f" ;;
 					*.sql)    echo "[IMPORT] $0: running $f"; echo "exit" | su oracle -c "NLS_LANG=.$CHARACTER_SET $ORACLE_HOME/bin/sqlplus -S / as sysdba @$f"; echo ;;
-					*.dmp)    echo "[IMPORT] $0: running $f"; impdp $f ;;
 					*)        echo "[IMPORT] $0: ignoring $f" ;;
 				esac
 				echo

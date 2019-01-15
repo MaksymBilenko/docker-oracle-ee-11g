@@ -9,9 +9,10 @@ ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/u01/app/o
 
 ADD entrypoint.sh /entrypoint.sh
 
+VOLUME /etc/entrypoint-initdb.d
+
 EXPOSE 1521
 EXPOSE 8080
-VOLUME ["/docker-entrypoint-initdb.d"]
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD [""]
