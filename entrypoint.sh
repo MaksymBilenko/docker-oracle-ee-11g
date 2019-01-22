@@ -59,8 +59,6 @@ case "$1" in
 				export CHARACTER_SET="AL32UTF8"
 			fi
 
-			#printf "Setting up:\nprocesses=$processes\nsessions=$sessions\ntransactions=$transactions\n"
-
 			mv /u01/app/oracle-product/11.2.0/EE/dbs /u01/app/oracle/dbs
 			ln -s /u01/app/oracle/dbs /u01/app/oracle-product/11.2.0/EE/dbs
 
@@ -69,13 +67,6 @@ case "$1" in
 			#create DB for SID: EE
 			echo "Running initialization by dbca"
 			su oracle -c "$ORACLE_HOME/bin/dbca -silent -createDatabase -templateName General_Purpose.dbc -gdbname EE.oracle.docker -sid EE -responseFile NO_VALUE -characterSet $CHARACTER_SET -totalMemory $DBCA_TOTAL_MEMORY -emConfiguration LOCAL -dbsnmpPassword oracle -sysPassword oracle -systemPassword oracle"
-			
-			# echo "Configuring Apex console"
-			# cd $ORACLE_HOME/apex
-			# su oracle -c 'echo -e "0Racle$\n8080" | $ORACLE_HOME/bin/sqlplus -S / as sysdba @apxconf > /dev/null'
-			# su oracle -c 'echo -e "${ORACLE_HOME}\n\n" | $ORACLE_HOME/bin/sqlplus -S / as sysdba @apex_epg_config_core.sql > /dev/null'
-			# su oracle -c 'echo -e "ALTER USER ANONYMOUS ACCOUNT UNLOCK;" | $ORACLE_HOME/bin/sqlplus -S / as sysdba > /dev/null'
-			# echo "Database initialized. Please visit http://#containeer:8080/em http://#containeer:8080/apex for extra configuration if needed"
 		fi
 
 		if [ $WEB_CONSOLE == "true" ]; then
@@ -90,7 +81,7 @@ case "$1" in
 			echo "Starting import from '/etc/entrypoint-initdb.d':"
 
 			for f in /etc/entrypoint-initdb.d/*; do
-				echo "found file /etc/entrypoint-initdb.d/$f"
+				echo "found file $f"
 				case "$f" in
 					*.sh)     echo "[IMPORT] $0: running $f"; . "$f" ;;
 					*.sql)    echo "[IMPORT] $0: running $f"; echo "exit" | su oracle -c "NLS_LANG=.$CHARACTER_SET $ORACLE_HOME/bin/sqlplus -S / as sysdba @$f"; echo ;;
